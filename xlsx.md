@@ -8,3 +8,5 @@ sudo apt-get install default-jdk
 sudo
 R CMD javareconf
 ```
+这时再安装rJava提示：checking whether JNI programs can be compiled... configure: error: Cannot compile a simple JNI program.
+https://github.com/s-u/rJava/issues/200
