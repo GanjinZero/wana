@@ -1,8 +1,11 @@
 # 问题描述
+```
 raise ValueError("None values not supported.")
 ValueError: None values not supported.
+```
 
 # 具体
+```
 None
 Traceback (most recent call last):
   File "judger_position_with_context.py", line 118, in <module>
@@ -30,3 +33,36 @@ Traceback (most recent call last):
   File "/root/anaconda3/envs/thuys36/lib/python3.6/site-packages/tensorflow/python/framework/tensor_util.py", line 454, in make_tensor_proto
     raise ValueError("None values not supported.")
 ValueError: None values not supported.
+```
+
+# 解决方法
+降级Tensorflow至1.12.0，降级后提示
+```
+module 'tensorflow.python.keras.backend' has no attribute 'get_graph'
+```  
+降级Keras至2.2.4.
+
+# 问题续
+出现错误提示
+```
+Traceback (most recent call last):
+  File "judger_position_with_context.py", line 121, in <module>
+    validation_data=(x_test, y_test), callbacks=[history])
+  File "/root/anaconda3/envs/thuys36/lib/python3.6/site-packages/keras/engine/training.py", line 1039, in fit
+    validation_steps=validation_steps)
+  File "/root/anaconda3/envs/thuys36/lib/python3.6/site-packages/keras/engine/training_arrays.py", line 199, in fit_loop
+    outs = f(ins_batch)
+  File "/root/anaconda3/envs/thuys36/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py", line 2715, in __call__
+    return self._call(inputs)
+  File "/root/anaconda3/envs/thuys36/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py", line 2675, in _call
+    fetched = self._callable_fn(*array_vals)
+  File "/root/anaconda3/envs/thuys36/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1439, in __call__
+    run_metadata_ptr)
+  File "/root/anaconda3/envs/thuys36/lib/python3.6/site-packages/tensorflow/python/framework/errors_impl.py", line 528, in __exit__
+    c_api.TF_GetCode(self.status.status))
+tensorflow.python.framework.errors_impl.InvalidArgumentError: indices[56,16] = -1 is not in [0, 20)
+   [[{{node embedding_2/embedding_lookup}} = GatherV2[Taxis=DT_INT32, Tindices=DT_INT32, Tparams=DT_FLOAT, _class=["loc:@training/Adam/Assign_5"], _device="/job:localhost/replica:0/task:0/device:CPU:0"](embedding_2/embeddings/read, lambda_1/concat, training/Adam/gradients/embedding_2/embedding_lookup_grad/concat/axis)]]
+```
+
+# 解决方法
+推测是出现了'/xab'之类的被转义的符号？
