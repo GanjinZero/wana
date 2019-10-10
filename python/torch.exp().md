@@ -14,3 +14,4 @@ Ubuntu: 16.04
 # 解决方案
 - torch.exp(t.float())
 - https://github.com/pytorch/pytorch/issues/25904
+- Downgrade pytorch to 1.1.0
